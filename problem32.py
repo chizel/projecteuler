@@ -9,22 +9,34 @@ def num_of_digit(number):
         i += 1
     return i
 
-def is_pandigital(arg):
-    arr = range(1,9)
-    arg[0] = 3
+def is_pandigital(*arg):
+    arr = range(1,10)
+    for num in arg:
+        while num:
+            digit = num % 10
+            if digit not in arr:
+                return False
+            num /= 10
+            arr.remove(digit)
+    if len(arg) == 3:
+        if not arr:
+            return True
+        else:
+            return False
+    return True
 
-for i in range(1, 9999):
-    for j in range(1, 5 - num_of_digit(i)):
-        ubound = 1
-    for j in range(1, ubound):
-        if not is_pandigital(i, j):
-            continue
-        res = i * j
-        if not is_pandigital(i, j, res):
-            continue
-        arr_res.append(res)
 def main():
-    print is_pandigital(13, 27)
+    arr_res = []
+    for i in range(1, 5000):
+        for j in range(i, 10 ** (5 - (num_of_digit(i)))):
+            if not is_pandigital(i, j):
+                continue
+            res = i * j
+            if not is_pandigital(i, j, res):
+                continue
+            arr_res.append(res)
+    print arr_res
+    print sum(list(set(arr_res)))
 
 if __name__ == "__main__":
     main()
