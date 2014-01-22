@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 def number_of_digits(number):
+    '''return count of digits in number'''
     #number is 0 and has 1 digit
     if not number:
         return 1
@@ -45,6 +46,13 @@ def generate_primes(upper_bound, result_is_tuple=1):
     if result_is_tuple:
         primes = tuple(primes)
     return primes
+
+def generate_squares(upper_bound, start=0, result_is_tuple=1):
+    '''generate list of squares from start(default 0) to upper_bound
+    if result must be list, set result_is_tuple to 0'''
+    squares = range(start, upper_bound + 1)
+    squares = [x**2 for x in squares]
+    return squares
 
 
 def main():
