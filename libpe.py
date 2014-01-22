@@ -36,14 +36,14 @@ def generate_primes(upper_bound, result_is_tuple=1):
     for num in primes:
         if num < 2:
             continue
-        for i in range(2 * num, len(lop), num):
-            lop[i] = 0
-    lop = list(set(lop))
-    lop.remove(0)
-    lop.remove(1)
-    lop.sort()
+        for i in range(2 * num, len(primes), num):
+            primes[i] = 0
+    primes = list(set(primes))
+    primes.remove(0)
+    primes.remove(1)
+    primes.sort()
     if result_is_tuple:
-        top = tuple(lop)
+        primes = tuple(primes)
     return primes
 
 
