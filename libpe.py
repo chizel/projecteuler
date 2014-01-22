@@ -29,6 +29,24 @@ def is_pandigital(number, bound=9, include_zero=0, all_digits=1):
     else:
         return True
 
+def generate_primes(upper_bound, result_is_tuple=1):
+    '''generate list of primes from 2 to upper_bound
+    if result must be list, set result_is_tuple to 0'''
+    primes = range(0, upper_bound + 1)
+    for num in primes:
+        if num < 2:
+            continue
+        for i in range(2 * num, len(lop), num):
+            lop[i] = 0
+    lop = list(set(lop))
+    lop.remove(0)
+    lop.remove(1)
+    lop.sort()
+    if result_is_tuple:
+        top = tuple(lop)
+    return primes
+
+
 def main():
     print is_pandigital(123456789)
     return
