@@ -1,0 +1,6 @@
+# ignore pyc files
+*.pyc
+# ignore text files
+*.txt
+# except foo.html
+#!*/foo.html
