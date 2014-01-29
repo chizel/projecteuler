@@ -11,7 +11,7 @@ def check_mult(number, primes):
         if prime > number:
             return 0
 
-        #number divisible by prime
+        #is number divisible by prime
         if not number % prime:
             number /= prime
             num_div += 1
@@ -23,19 +23,19 @@ def check_mult(number, primes):
 def main():
     primes = libpe.generate_primes(999)
     cons = 0
+    i = 646
 
-    for i in range(1000, 9999):
+    while 1:
         if check_mult(i, primes) > 3:
             cons += 1
         else:
             cons = 0
-        if cons >= 2:
+        if cons >= 4:
             print i, i - 1, i - 2, 'answer: ', i - 3
-
-    return
+            break
+        i += 1
 
 if __name__ == "__main__":
     start = time.time()
     main()
     print 'Time: ', time.time() - start
-
