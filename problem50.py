@@ -15,47 +15,37 @@ def generate_tuple_of_primes(ubound):
     top = tuple(lop)
     return top 
 
-top = generate_tuple_of_primes(1000)
+top = generate_tuple_of_primes(1000000)
 
-def f(num):
-    i = 0
-    j = 0
-    lenght = 0
+def v():
     res = 0
+    max_len = 21
+    tmp_num = 0
+    tmp_len = 0
+    ind = 0
 
-    while 1:
-        while res < num:
+    for item in top:
+        print item
+
+        res = item
+        tmp_len = 1
+        i = top.index(item) + 1
+
+        while res < top[-1]:
+            if tmp_len > 21 and res in top:
+                if max_len < tmp_len:
+                    max_len = tmp_len
+                    tmp_num = res 
             res += top[i]
+            tmp_len += 1
             i += 1
-        print res
 
-        if res == num:
-            return lenght
-
-        while top[i] < (num/2):
-            if res == num:
-                return lenght
-
-            if res > num:
-                res -= top[j]
-                j += 1
-                lenght -= 1
-            else:
-                res += top[i]
-                i += 1
-                lenght += 1
-    return lenght
-print f(953)
-#tmp = 0
-#for i in top:
-    #if tmp < 953:
-        #tmp += top[i]
-
-#print tmp
+    print 'answer: ', tmp_num, '; lenght: ', max_len
 
 def main():
+    max_len = 0
+    v()
     return
 
 if __name__ == "__main__":
     main()
-
