@@ -6,10 +6,13 @@ def number_of_digits(number):
     #number is 0 and has 1 digit
     if not number:
         return 1
+
     res = 0
+
     while number:
         res += 1
         number /= 10
+
     return res
 
 def is_pandigital(number, bound=9, include_zero=0, all_digits=1):
@@ -33,7 +36,19 @@ def is_pandigital(number, bound=9, include_zero=0, all_digits=1):
 
 def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
     '''generate list of primes from 2 to upper_bound
-    if result must be list, set result_is_tuple to 0'''
+        if result must be list, set result_is_tuple to 0
+        lower_bound < 0 is equal lower_bound = 1'''
+
+    if upper_bound < 2:
+        print 'Error! upper_bound can\'t be less 2!'
+        print 'upper_bound: ', upper_bound
+        exit()
+
+    if lower_bound:
+        if lower_bound > upper_bound:
+            print 'Error! lower_bound can\'t be more upper_bound!'
+            print 'lower_bound: ', lower_bound, ', upper_bound: ', upper_bound
+            exit()
 
     primes = range(0, upper_bound + 1)
 
@@ -45,19 +60,18 @@ def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
         for i in range(2 * num, len(primes), num):
             primes[i] = 0
 
+    #remove elements equal 0, except first element
     primes = list(set(primes))
 
-    if lower_bound:
-        i = 0
+    #remove 0 and 1
+    i = 2
 
+    #remove elements less than lower_bound
+    if lower_bound:
         while lower_bound > primes[i]:
             i += 1
 
-        primes = primes[i:]
-    else:
-        primes.remove(0)
-        primes.remove(1)
-
+    primes = primes[i:]
     primes.sort()
 
     if result_is_tuple:
@@ -72,3 +86,7 @@ def generate_squares(upper_bound, start=0, result_is_tuple=1):
     squares = range(start, upper_bound + 1)
     squares = [x**2 for x in squares]
     return squares
+
+low = -10
+up = 5
+print generate_primes(up, low)
