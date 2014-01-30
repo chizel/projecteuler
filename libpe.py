@@ -31,7 +31,7 @@ def is_pandigital(number, bound=9, include_zero=0, all_digits=1):
     else:
         return True
 
-def generate_primes(upper_bound, result_is_tuple=1):
+def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
     '''generate list of primes from 2 to upper_bound
     if result must be list, set result_is_tuple to 0'''
 
@@ -47,8 +47,17 @@ def generate_primes(upper_bound, result_is_tuple=1):
 
     primes = list(set(primes))
 
-    primes.remove(0)
-    primes.remove(1)
+    if lower_bound:
+        i = 0
+
+        while lower_bound > primes[i]:
+            i += 1
+
+        primes = primes[i:]
+    else:
+        primes.remove(0)
+        primes.remove(1)
+
     primes.sort()
 
     if result_is_tuple:
