@@ -2,8 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import time
+import libpe
 
 def main():
+    primes = libpe.generate_primes(999999, lower_bound = 100000)
+    #print primes
     return
 
 if __name__ == "__main__":
