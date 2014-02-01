@@ -26,13 +26,37 @@ class Pandigital:
         else:
             return True
 
-    def generate_pandigital(self, start=1, end=9):
-        pass
+    #def generate_pandigital(self, start=1, end=9, start_min=1):
+    def generate_pandigital(self, start=1, end=3, start_min=1):
+        '''generate pandigital number, next number will be
+        bigger, if start_min=1
+        generate_pandigital([start, [end, [start_min]]]'''
+
+        if start < 0:
+            print 'Error! start must be more or equal 0!'
+            return
+        if end > 10:
+            print 'Error! end can\'t be more then 10!'
+            return
+        if start > end:
+            print 'Error! start can\'t be more then end!'
+            return
+
+        digits = range(start, end +1)
+
+        for i in range(0, 5):
+            for j in range(0, 5):
+                pass
+        for i in range(len(digits) - 2, -1, -1):
+            digits[i:] = sorted(digits[i:])
+            tmp = digits[i]
+            digits[i] = digits[i + 1]
+            digits[i + 1] = tmp
+            print digits
 
     def __iter__(self, direction=0):
         '''return next pandigital number'''
         if direction:
-#return from less to greater number
             pass
         else:
             pass
@@ -40,7 +64,9 @@ class Pandigital:
 
 
 def main():
-    pand = Pandigital()
+    p = Pandigital()
+    p.generate_pandigital()
+
 
 if __name__ == "__main__":
     start  = time.time()
