@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 class Sudoku():
-    '''problem 96'''
+    '''Solve sudoku'''
 
     def __init__(self, lines):
         self.__generate_sudoku(lines)
@@ -61,12 +61,23 @@ class Sudoku():
                     continue
                 self.guess_nums[i][j].remove(number)
 
+                if len(self.guess_nums[i][j]) == 1:
+                    self.sudoku[i][j] = self.guess_nums[i][j][0]
+                    self.guess_nums[i][j] = []
+                    self.__delete_number(self.sudoku[i][j], i, j)
+
         for i in range(0, 9):
             if not self.guess_nums[row][i]:
                 continue
             if not number in self.guess_nums[row][i]:
                 continue
             self.guess_nums[row][i].remove(number)
+
+            if len(self.guess_nums[row][i]) == 1:
+                self.sudoku[row][i] = self.guess_nums[row][i][0]
+                self.guess_nums[row][i] = []
+                self.__delete_number(self.sudoku[row][i], row, i)
+
 
         for i in range(0, 9):
             if not self.guess_nums[i][column]:
@@ -75,40 +86,109 @@ class Sudoku():
                 continue
             self.guess_nums[i][column].remove(number)
 
+            if len(self.guess_nums[i][column]) == 1:
+                self.sudoku[i][column] = self.guess_nums[i][column][0]
+                self.guess_nums[i][column] = []
+                self.__delete_number(self.sudoku[i][column], i, column)
+
+    def __check(self):
+        changed = False
+
+        for i in range(0,9):
+            for j in range(0,9):
+                if len(self.guess_nums[i][j]) == 1:
+                    changed = True
+                    self.sudoku[i][j] = self.guess_nums[i][j][0]
+                    self.__delete_number(self.sudoku[i][j], i, j)
+        return changed
+         
+    def check_row(self, row):
+        tmp = [0] * 9
+        col_ind = [0] * 9
+
+        for i in range(0, 9):
+            for number in self.guess_nums[row][i]:
+                tmp[number - 1] += 1
+                col_ind[number - 1] = i
+
+        for i in range(0, 9):
+            if tmp[i] == 1 and len(self.guess_nums[row][i]) > 1:
+                number = i + 1 
+                ind = col_ind[number - 1]
+                self.sudoku[row][ind] = number
+                self.__delete_number(number, row, ind)
+
+    def check_column(self, column):
+        tmp = [0] * 9
+        row_ind = [0] * 9
+
+        for i in range(0, 9):
+            for number in self.guess_nums[i][column]:
+                tmp[number - 1] += 1
+                row_ind[number - 1] = i
+
+        for i in range(0, 9):
+            if tmp[i] == 1 and len(self.guess_nums[i][column]) > 1:
+                number = i + 1 
+                ind = row_ind[number - 1]
+                self.sudoku[ind][column] = number
+                self.__delete_number(number, ind, column)
+
+    def check_square(self, square_num):
+        if square_num < 3:
+            i = [0,1,2]
+        elif square_num < 6:
+            i = [3,4,5]
+        else:
+            i = [6,7,8]
+
+        if not square_num % 3:
+            j = [0,1,2]
+        elif (square_num % 3) == 1:
+            j = [3,4,5]
+        else:
+            j = [6,7,8]
+
+        tmp = [0] * 9
+        row_ind = [0] * 9
+        col_ind = [0] * 9
+
+        for row in i:
+            for column in j:
+                for number in self.guess_nums[row][column]:
+                    tmp[number - 1] += 1
+                    row_ind[number - 1] = row
+                    col_ind[number - 1] = column
+
+        for i in range(0, 9):
+            if tmp[i] == 1 and len(self.guess_nums[row][column]) > 1:
+                number = i + 1 
+                ind_r = row_ind[number - 1]
+                ind_c = col_ind[number - 1]
+                self.guess_nums[ind_r][ind_c] = []
+                self.sudoku[ind_r][ind_c] = number
+
     def solve_sudoku(self):
         for i in range(0,9):
             for j in range(0,9):
                 if not self.sudoku[i][j]:
                     continue
                 self.__delete_number(self.sudoku[i][j], i, j)
+                print self.guess_nums[7][6]
 
-        i = 0
-
-        while self.check():
-            i += 1
-            print i
+        while self.__check():
             pass
-    
-    def check_row(self, row):
-        for nums in self.guess_nums[row]:
-            print nums
-        pass
 
-    def check_column(self, column):
-        for row in self.guess_nums:
-            print row[column]
+        for j in range(0, 2):
+            print self.guess_nums[7][6]
+            for i in range(0, 9):
+                self.check_column(i)
 
-    def check(self):
-        change = False
+            for i in range(0, 9):
+                self.check_row(i)
 
-        for i in range(0,9):
-            for j in range(0,9):
-                if len(self.guess_nums[i][j]) == 1:
-                    change = True
-                    self.sudoku[i][j] = self.guess_nums[i][j][0]
-                    self.__delete_number(self.sudoku[i][j], i, j)
-        return change
-        
+            for i in range(0, 9):
+                self.check_square(i)
 
     def print_sudoku(self):
         res = ''
@@ -138,10 +218,10 @@ def main():
     lines = source.split()
     
     p = Sudoku(lines)
-    p.solve_sudoku()
-    #p.print_guess_nums()
     #p.print_sudoku()
-    p.check_column(2)
+    p.solve_sudoku()
+    #p.print_sudoku()
+    #p.print_guess_nums()
 
 if __name__ == "__main__":
     main()
