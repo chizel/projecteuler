@@ -9,6 +9,10 @@ class Sudoku():
         self.__generate_guess_nums()
 
     def __generate_sudoku(self, lines):
+    '''generate sudoku, input is 1-9 for filled cells,
+    0 for empty cells. Each line of sudoku must contain
+    only digits. Lines delimeter is space.
+    Input example (first sudoku's line): 098001030'''
         self.sudoku = []
 
         for i in range(0, len(lines)):
@@ -18,18 +22,27 @@ class Sudoku():
                 self.sudoku[i].append(int(digit))
 
     def __generate_guess_nums(self):
+        '''guess_nums contains all possible variants of digits
+        that cab be filled in current cell.
+        If cell filled, guess_nums of this cell is empty.'''
         self.guess_nums = []
 
         for i in range(0,9):
             self.guess_nums.append([])
 
             for j in range(0, 9):
+#cell contain number
                 if self.sudoku[i][j]:
                     self.guess_nums[i].append([])
                 else:
                     self.guess_nums[i].append([x for x in range(1,10)])
 
     def __what_square(self, row, column):
+        '''return square indicex by row and column.
+        Example: 
+            input: row = 1, column = 8
+            output: [[0,1,2][6,7,8]]'''
+
         square = []
 
         if row <= 2:
@@ -49,8 +62,12 @@ class Sudoku():
         return square
 
     def __delete_number(self, number, row, column):
+        '''if number filled to sudoku, delete it
+        from guess_nums same row, column and square'''
+
         square = self.__what_square(row, column)
 
+#delete number from square
         for i in square[0]:
             for j in square[1]:
                 if not self.guess_nums[i][j]:
@@ -59,6 +76,7 @@ class Sudoku():
                     continue
                 self.guess_nums[i][j].remove(number)
 
+#delete number from current row
         for i in range(0, 9):
             if not self.guess_nums[row][i]:
                 continue
@@ -66,6 +84,7 @@ class Sudoku():
                 continue
             self.guess_nums[row][i].remove(number)
 
+#delete number from current column
         for i in range(0, 9):
             if not self.guess_nums[i][column]:
                 continue
@@ -77,6 +96,10 @@ class Sudoku():
             pass
 
     def __check(self):
+    '''if guess_nums[i][j] contain only one number - 
+    fill it to sudoku and delete it from guess_nums
+    row i, column j, square, that contain [i][j]'''
+
         changed = False
 
         for i in range(0,9):
@@ -88,7 +111,12 @@ class Sudoku():
         return changed
          
     def check_row(self, row):
+        '''if we meet digit only once in this row - fill it
+        to sudoku'''
+
+#contain how many times we meet digit
         tmp = [0] * 9
+#contain index of column of latest digit
         col_ind = [0] * 9
         changed = False
 
@@ -98,7 +126,6 @@ class Sudoku():
                 col_ind[number - 1] = i
 
         for i in range(0, 9):
-            #if tmp[i] == 1 and len(self.guess_nums[row][i]) > 1:
             if tmp[i] == 1:
                 number = i + 1 
                 ind = col_ind[number - 1]
