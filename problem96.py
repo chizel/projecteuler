@@ -1,6 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import copy
+import time
+
 class Sudoku():
     '''Solve sudoku'''
 
@@ -12,6 +15,13 @@ class Sudoku():
     def reset_sudoku(self):
         self.__generate_sudoku()
         self.__generate_guess_nums()
+
+        for i in range(0,9):
+            for j in range(0,9):
+                if not self.sudoku[i][j]:
+                    continue
+                self.__delete_number(self.sudoku[i][j], i, j)
+
 
     def __generate_sudoku(self):
         '''generate sudoku, input is 1-9 for filled cells,
@@ -166,7 +176,6 @@ class Sudoku():
                 row_ind[number - 1] = i
 
         for i in range(0, 9):
-            #if tmp[i] == 1 and len(self.guess_nums[i][column]) > 1:
             if tmp[i] == 1:
                 number = i + 1 
                 ind = row_ind[number - 1]
@@ -190,7 +199,6 @@ class Sudoku():
                     row_ind[number - 1] = row
                     col_ind[number - 1] = column
         for i in range(0, 9):
-            #if tmp[i] == 1 and len(self.guess_nums[row][column]) > 1:
             if tmp[i] == 1:
                 number = i + 1 
                 ind_r = row_ind[number - 1]
@@ -245,18 +253,112 @@ class Sudoku():
                             self.guess_nums[k][column].remove(s_num)
         return changed
 
-    def solve_sudoku(self):
+    def is_solved(self):
+        for i in range(0, 9):
+            for j in range(0, 9):
+                if self.guess_nums[i][j] or not self.sudoku[i][j]:
+                    return False
+
+        for row in self.sudoku:
+            for i in range(0, 9):
+                if row[i] in row[i + 1:]:
+                    return False
+        
+
+        for i in range(0, 9):
+            tmp = []
+
+            for j in range(0, 9):
+                tmp.append(self.sudoku[i][j])
+
+            for i in range(0, 9):
+                if tmp[i] in tmp[i + 1:]:
+                    return False
+
+
+        for i in range(0, 9):
+            tmp = []
+            square = self.__what_square(square_number=i)
+
+            for i in square[0]:
+                for j in square[1]:
+                    tmp.append(self.sudoku[i][j])
+
+            for i in range(0, 9):
+                if tmp[i] in tmp[i + 1:]:
+                    return False
+
+        return True
+
+
+    def print_len_guess(self):
+        res = 0
+
+        for line in self.guess_nums:
+            for i in line:
+                if len(i) > 0:
+                    res += 1
+        print res
+
+    def print_sudoku(self):
+        res = '.___________.\n'
+
+        for i in range(0,9):
+
+            if i == 3 or i == 6:
+                res += '.---+---+---.\n'
+            res += '|'
+
+            for j in range(0,9):
+                res += str(self.sudoku[i][j])
+                if j == 2 or j == 5:
+                    res += '|'
+            res += '|\n'
+        res += '.-----------.\n'
+        print res
+
+    def print_guess_nums(self):
+        for line in self.guess_nums:
+            print line
+
+
+    def try_solve(self):
+        self.solve_sudoku()
+
+        if self.is_solved():
+            return
+
+        sudoku_copy = copy.deepcopy(self.sudoku)
+        guess_nums_copy = copy.deepcopy(self.guess_nums)
+        
         for i in range(0,9):
             for j in range(0,9):
-                if not self.sudoku[i][j]:
-                    continue
-                self.__delete_number(self.sudoku[i][j], i, j)
+                if len(self.guess_nums[i][j]) == 2:
+                    rem = self.guess_nums[i][j][:]
 
+                    self.sudoku[i][j] = rem[0]
+                    self.guess_nums[i][j] = []
+                    self.__delete_number(rem[0], i, j)
+                    self.solve_sudoku()
+
+                    if self.is_solved():
+                        return
+
+                    self.sudoku = copy.deepcopy(sudoku_copy)
+                    self.guess_nums = copy.deepcopy(guess_nums_copy)
+                    self.sudoku[i][j] = rem[1]
+                    self.guess_nums[i][j] = []
+                    self.__delete_number(rem[1], i, j)
+                    self.solve_sudoku()
+
+                    if self.is_solved():
+                        return
+
+    def solve_sudoku(self):
         again = True
 
         while again:
             again = False
-
             while self.__check():
                 again = True
 
@@ -304,78 +406,26 @@ class Sudoku():
                         again = True
                         changed = True
 
-        self.print_len_guess()
-
-    def is_solved(self):
-        for i in range(0, 9):
-            for j in range(0, 9):
-                if self.guess_nums[i][j]:
-                    return False
-
-        for row in self.sudoku:
-            for i in range(0, 9):
-                if row[i] in row[i + 1:]:
-                    return False
-        
-        tmp = []
-
-        for i in range(0, 9):
-            for j in range(0, 9):
-                tmp.append(self.sudoku[i][j])
-
-        for i in range(0, 9):
-            if tmp[i] in tmp[i + 1:]:
-                return False
-
-    def print_len_guess(self):
-        res = 0
-
-        for line in self.guess_nums:
-            for i in line:
-                if len(i) > 0:
-                    res += 1
-        print res
-
-    def print_sudoku(self):
-        res = '.___________.\n'
-
-        for i in range(0,9):
-
-            if i == 3 or i == 6:
-                res += '.---+---+---.\n'
-            res += '|'
-
-            for j in range(0,9):
-                res += str(self.sudoku[i][j])
-                if j == 2 or j == 5:
-                    res += '|'
-            res += '|\n'
-        res += '.-----------.\n'
-        print res
-
-    def print_guess_nums(self):
-        for line in self.guess_nums:
-            print line
-
 def main():
-    #source = []
-    #with open('sudoku.txt', 'r') as f:
-        #for line in f:
-            #if line[0] == 'G':
-                #source.append('')
-            #else:
-                #if line[-1] == '\n':
-                    #line = line[:-1]
-    #            source[-1] += ' ' + line
-    source = ['100920000 524010000 000000070 050008102 000000000 402700090 060000000 000030945 000071006']
+    source = []
+    with open('sudoku.txt', 'r') as f:
+        for line in f:
+            if line[0] == 'G':
+                source.append('')
+            else:
+                if line[-1] == '\n':
+                    line = line[:-1]
+                source[-1] += ' ' + line
+
+    res = 0
 
     for line in source:
         p = Sudoku(line.split())
-        p.print_sudoku()
-        p.solve_sudoku()
-        p.print_sudoku()
-        #inp = raw_input('Next')
-        p.print_guess_nums()
+        p.try_solve()
+        res += p.sudoku[0][0] * 100 + p.sudoku[0][1] * 10 + p.sudoku[0][2]
+    print res
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    print 'Time: ', time.time() - start
