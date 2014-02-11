@@ -2,13 +2,6 @@
 # -*- coding: utf-8 -*-
 
 class RomanNumbers():
-    roman_to_arabic = {
-            'I':1, 'IV':4, 'V':5,
-            'IX':9, 'X':10, 'XL':40,
-            'L':50, 'XC':90, 'C':100,
-            'CD':400, 'D':500, 'CM':900,
-            'M':1000}
-
     def __init__(self, roman):
         self.set_roman(roman)
 
@@ -22,29 +15,63 @@ class RomanNumbers():
         self.arabic = []
 
         for number in self.roman:
-            #result = number
+            result = number
             self.arabic.append(result)
 
     def convert_arabic_to_roman(self):
         self.roman_numbers = []
 
         for number in self.arabic:
-            #result = number
+            result = number
             self.roman_numbers.append(result)
 
+    roman_to_arabic = {
+            'I':1, 'V':5, 'X':10, 'L':50,
+            'C':100, 'D':500, 'M':1000
+            }
+ 
+    roman_to_arabic_once = {
+            'IV':4, 'IX':9, 'XL':40,
+            'XC':90, 'CD':400, 'CM':900
+            }
+
     def arabic_to_roman(self, number):
-        if number > 4000:#what bound????
+        if number >= 4000:#what bound????
             return
 
-        #while number:
-            #tmp = number % 10
-            #number %= 10
+        if number > == 1000:
+            for i in range(0, number/3):
+                result += 'M'
+            number %= 1000
 
-    def roman_to_arabic(roman):
-        res = []
+        if number >= 900:
+            result += 'CM'
+            number %= 100
 
-        for number in roman:
-            pass
+        if number >= 500:
+            result += 'D'
+            number %= 100
+        elif number >= 400:
+            result += 'CD'
+            number %= 100
+
+        if number >= 'XC':
+            result += 'XC'
+            number %= 10
+
+            'I':1, 'V':5, 'X':10, 'L':50,
+            'IV':4, 'IX':9, 'XL':40,
+
+
+        while number:
+            tmp = number % 10
+            number %= 10
+
+    #def roman_to_arabic(roman):
+        #res = []
+
+        #for number in roman:
+      #      pass
 def main():
 #    romain_numbers = []
 
