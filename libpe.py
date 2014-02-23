@@ -79,14 +79,28 @@ def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
 
     return primes
 
-def generate_squares(upper_bound, start=0, result_is_tuple=1):
+def generate_squares(upper_bound, start=0, result_tuple=1):
     '''generate list of squares from start(default 0) to upper_bound
-    if result must be list, set result_is_tuple to 0'''
+    if result must be list, set result_tuple to 0'''
 
     squares = range(start, upper_bound + 1)
     squares = [x**2 for x in squares]
     return squares
 
-low = -10
-up = 5
-print generate_primes(up, low)
+def split_number(number, result_tuple=1):
+    '''split number's digits
+    return tuple/list
+    if result must be list, set result_tuple to 0'''
+
+    result = []
+
+    while number:
+        result.append(number % 10)
+        number /= 10
+
+    result = reversed(result)
+
+    if result_tuple:
+        result = tuple(result)
+
+    return result
