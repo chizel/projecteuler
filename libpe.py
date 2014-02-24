@@ -63,6 +63,8 @@ def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
     #remove elements equal 0, except first element
     primes = list(set(primes))
 
+    primes.sort()
+
     #remove 0 and 1
     i = 2
 
@@ -72,11 +74,9 @@ def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
             i += 1
 
     primes = primes[i:]
-    primes.sort()
 
     if result_is_tuple:
         primes = tuple(primes)
-
     return primes
 
 def generate_squares(upper_bound, start=0, result_tuple=1):
