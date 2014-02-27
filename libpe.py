@@ -29,6 +29,7 @@ def is_pandigital(number, bound=9, include_zero=0, all_digits=1):
     if all_digits and len(digits) < (9 + include_zero):
         return False
 
+    #is digits in number are uniqe
     if len(digits) > len(set(digits)):
         return False
     else:
@@ -57,6 +58,7 @@ def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
         if num < 2:
             continue
 
+        #remove every n'th number (it can be diveded by n'th number)
         for i in range(2 * num, len(primes), num):
             primes[i] = 0
 
@@ -68,11 +70,12 @@ def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
     #remove 0 and 1
     i = 2
 
-    #remove elements less than lower_bound
+    #find elements less than lower_bound
     if lower_bound:
         while lower_bound > primes[i]:
             i += 1
 
+    #remove elements less than lower_bound
     primes = primes[i:]
 
     if result_is_tuple:
