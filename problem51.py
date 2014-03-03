@@ -49,4 +49,3 @@ if __name__ == "__main__":
     start = time.time()
     main()
     print 'Time: ', time.time() - start
-
