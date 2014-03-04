@@ -90,7 +90,7 @@ def generate_squares(upper_bound, start=0, result_tuple=1):
     squares = [x**2 for x in squares]
     return squares
 
-def split_number(number, result_tuple=1):
+def split_number(number, result_tuple=1, normal_order=1):
     '''split number's digits
     return tuple/list
     if result must be list, set result_tuple to 0'''
@@ -101,7 +101,8 @@ def split_number(number, result_tuple=1):
         result.append(number % 10)
         number /= 10
 
-    result = reversed(result)
+    if normal_order:
+        result.reverse()
 
     if result_tuple:
         result = tuple(result)
