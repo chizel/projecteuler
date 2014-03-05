@@ -1,31 +1,29 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import time
 import libpe
 
 class Cubes():
-    def __init__(self, start, end):
+    def __init__(self, start):
         self.start = start
-        self.end = end
-        self.stop = 10
 
     def generate_cubes(self):
         i = self.start
         res = []
-        tmp = i
+
+        start_cube = self.start ** 3
 
         while 1:
-            i += 1
             tmp = i ** 3
+            i += 1
 
-            if tmp < self.stop:
+            if libpe.number_of_digits(tmp) == libpe.number_of_digits(start_cube):
                 res.append(tmp)
             else:
                 break
 
-        print res
         self.start = i
-        self.stop *= 10
         return res
 
     def check_nubmers(self):
@@ -38,35 +36,30 @@ class Cubes():
                 continue
 
             for cube in cubes:
-                cube_digits = libpe.split_number(cube, result_tuple=0, normal_order=0)
-                if cube_digits[0] == 5 and cube_digits[1] == 2:
-                    print cube_digits
-                tmp.append(cube_digits)
-                check_arr.append(cube_digits)
-                tmp[-1] = sorted(tmp[-1])
+                cube_digits = libpe.split_number(cube, result_tuple=0, normal_order=1)
+                tmp.append([cube_digits, sorted(cube_digits)])
 
-            tmp = sorted(tmp)
+            tmp.sort(key=lambda x: x[1])
             i = 0
 
             while i < (len(tmp) - 1):
                 j = i + 1
 
-                while tmp[i] == tmp[j]:
+                while tmp[i][1] == tmp[j][1]:
                     j += 1
 
-                if (j - i) >= 3:
-                    check_arr = sorted(check_arr)
-                    for cube in check_arr:
-                        if sorted(cube) == tmp[i]:
-                            print cube, tmp[i]
-                    if tmp[i][-1] == 6:
-                        return tmp[i]
+                if (j - i) == 5:
+                    for number in tmp[i:j]:
+                        print number
+                    return
                 i = j
 
 def main():
-    p = Cubes(300,10000000000)
+    p = Cubes(1)
     print p.check_nubmers()
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    print 'Time: ', time.time() - start
 
