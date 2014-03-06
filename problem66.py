@@ -14,13 +14,11 @@ class problem66():
     def find_equation(self, d):
         for x in xrange(0, len(self.squares)):
             for y in xrange(x - 1, -1, -1):
-                print 'y:',y, 'x:', x
-                #print self.squares[x], self.squares[y]
                 result = self.squares[x] - d * self.squares[y]
-                if result < 1:
-                    continue
-                elif result > 1:
+                if result > 1:
                     break
+                elif result < 1:
+                    continue
                 else:
                     return [sqrt(self.squares[x]), d]
         return [0,0]
@@ -31,16 +29,15 @@ class problem66():
         for d in xrange(2, 10):#01):
             print d
             result = self.find_equation(d)
+
             if result[0] > tmp[0]:
                 tmp = result[:]
         return tmp
 
-
 def main():
     p = problem66()
-    p.generate_squares(100000)
+    p.generate_squares(20000)
     print p.find_solution()
-    #p.find_equation(5)
     return
 
 if __name__ == "__main__":
