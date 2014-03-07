@@ -35,21 +35,25 @@ def is_pandigital(number, bound=9, include_zero=0, all_digits=1):
     else:
         return True
 
-def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
+def generate_primes(upper_bound, lower_bound=0, result_is_tuple=1, include_1 = 0, include_0 = 0):
     '''generate list of primes from 2 to upper_bound
         if result must be list, set result_is_tuple to 0
-        lower_bound < 0 is equal lower_bound = 1'''
+        lower_bound < 0 is equal lower_bound = 1
+        if include_0 == 1, 1 we'll be included too'''
 
     if upper_bound < 2:
         print 'Error! upper_bound can\'t be less 2!'
         print 'upper_bound: ', upper_bound
         exit()
 
-    if lower_bound:
-        if lower_bound > upper_bound:
-            print 'Error! lower_bound can\'t be more upper_bound!'
-            print 'lower_bound: ', lower_bound, ', upper_bound: ', upper_bound
-            exit()
+    if lower_bound > upper_bound:
+        print 'Error! lower_bound can\'t be more upper_bound!'
+        print 'lower_bound: ', lower_bound, ', upper_bound: ', upper_bound
+        exit()
+    elif lower_bound < 0:
+        print 'Error! lower_bound can\'t be less than 2!'
+        print 'lower_bound: ', lower_bound
+        exit()
 
     primes = range(0, upper_bound + 1)
 
@@ -67,13 +71,17 @@ def generate_primes(upper_bound, lower_bound = 0, result_is_tuple=1):
 
     primes.sort()
 
-    #remove 0 and 1
-    i = 2
+    #is it need to remove 0 and 1
+    if include_0:
+        i = 0
+    elif include_1:
+        i = 1
+    else:
+        i = 2
 
     #find elements less than lower_bound
-    if lower_bound:
-        while lower_bound > primes[i]:
-            i += 1
+    while lower_bound > primes[i]:
+        i += 1
 
     #remove elements less than lower_bound
     primes = primes[i:]
