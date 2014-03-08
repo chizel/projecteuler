@@ -5,11 +5,18 @@ import time
 from math import sqrt
 
 class problem66():
-    def __init__(self):
-        pass
+    def __init__(self, squares_border):
+        self.generate_squares(squares_border)
+        self.generate_dy()
 
     def generate_squares(self, border):
         self.squares = [x**2 for x in xrange(1, border + 1)]
+
+    def generate_dy(self):
+        if self.squares == None:
+            return None
+        self.dy = [x - 1 for x in self.squares]
+
 
     def find_equation(self, d):
         if d in self.squares:
@@ -36,8 +43,7 @@ class problem66():
         return tmp
 
 def main():
-    p = problem66()
-    p.generate_squares(50000)
+    p = problem66(50000)
     #print p.find_solution()
     print p.find_equation(58)
     return
