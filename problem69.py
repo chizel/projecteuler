@@ -2,23 +2,28 @@
 # -*- coding: utf-8 -*-
 
 import time
+from math import sqrt
 import libpe
 
-BOUND = 10
+BOUND = 1000000
+#BOUND = 10
 
 def main():
-    primes = libpe.generate_primes(BOUND)#, include_1=1) 
+    primes = libpe.generate_primes(1000)#, include_1=1) 
     divisors = []
 
     for i in xrange(2,BOUND):
         tmp = []
+
         for prime in primes:
-            if prime > (i / 2):
+            if prime > int(sqrt(i)):
                 break
-            if not i % prime:
+            while not i % prime:
+                i /= prime
                 tmp.append(prime)
         divisors.append(tmp)
-    print divisors
+    #for i in range(len(divisors)):
+        #print i + 2, divisors[i]
 
 if __name__ == "__main__":
     start = time.time()
