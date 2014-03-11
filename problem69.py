@@ -6,7 +6,12 @@ from math import sqrt
 import libpe
 
 BOUND = 1000000
-BOUND = 10
+
+def is_have_some_numbers(a, b):
+    for number in a:
+        if number in b:
+            return True
+    return False
 
 def main():
     primes = libpe.generate_primes(1000)#, include_1=1) 
@@ -15,24 +20,36 @@ def main():
     for i in xrange(2,BOUND):
         tmp = []
         
-        if i in primes:
-            divisors.append([i])
-            continue
-
-        primes_bound = int(sqrt(i))
-
         for prime in primes:
-            if prime > primes_bound:
-                break
-            while not i % prime:
+            if not i % prime:
                 i /= prime
                 tmp.append(prime)
+
+                while not i % prime:
+                    i /= prime
         divisors.append(tmp)
 
-    for num in divisors:
-        print num
+    maxz = [0,0]
+    for i in range(len(divisors)):
+        if maxz[0] < len(divisors[i]):
+            maxz[0] = len(divisors[i])
+            maxz[1] = i
+    print maxz
+    #count_rprimes = [1] * len(divisors)
+    #maxm = [0.0, 0]
+    
+
+    #for i in range(BOUND - 2000, BOUND-1000,2):
+        #print i
+        #for j in range(3, i, 2):
+            #if not is_have_some_numbers(divisors[j], divisors[i]):
+                #count_rprimes[i] += 1
+        #if float(i) / count_rprimes[i] > maxm[0]:
+            #maxm[0] = float(i) / count_rprimes[i]
+            #maxm[1] = i
+    #print maxm
 
 if __name__ == "__main__":
     start = time.time()
     main()
-    print 'Start: ', time.time() - start
+    print 'Time: ', time.time() - start
